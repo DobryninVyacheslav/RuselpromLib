@@ -13,16 +13,16 @@ import com.ptc.pfc.pfcComponentFeat.ComponentConstraintType;
 import com.ptc.pfc.pfcComponentFeat.ComponentConstraints;
 import com.ptc.pfc.pfcComponentFeat.ComponentFeat;
 import com.ptc.pfc.pfcComponentFeat.pfcComponentFeat;
-import com.ptc.pfc.pfcModel.Model;
-import com.ptc.pfc.pfcModel.ModelDescriptor;
 import com.ptc.pfc.pfcModel.ModelType;
-import com.ptc.pfc.pfcModel.pfcModel;
 import com.ptc.pfc.pfcModelItem.ModelItem;
 import com.ptc.pfc.pfcModelItem.ModelItemType;
 import com.ptc.pfc.pfcSelect.Selection;
 import com.ptc.pfc.pfcSelect.pfcSelect;
 import com.ptc.pfc.pfcSession.Session;
 import com.ptc.pfc.pfcSolid.Solid;
+
+import ru.ruselprom.argument.assembly.CompModelAndAsmModel;
+import ru.ruselprom.argument.assembly.RefCoordSystems;
 
 public class Component {
 	
@@ -40,19 +40,19 @@ public class Component {
 		this.session = session;
 	}
 
-	public void addToAsmByCsys (String compFileName, String asmCsysName, String compCsysName, Model currModel) throws jxthrowable {
+	public void addToAsmByCsys (RefCoordSystems refCoordSystems, CompModelAndAsmModel compModelAndAsmModel) throws jxthrowable {
 		
 		Matrix3D identityMatrix = createIdentityMatrix();
 		Transform3D transf = pfcBase.Transform3D_Create (identityMatrix);
 		/*-----------------------------------------------------------------*\
 		Check the current assembly
-		\*-----------------------------------------------------------------*/  		
-		if (currModel == null || currModel.GetType() != ModelType.MDL_ASSEMBLY) {
+		\*-----------------------------------------------------------------*/
+		
+		if (compModelAndAsmModel.getAsmModel() == null || compModelAndAsmModel.getAsmModel().GetType() != ModelType.MDL_ASSEMBLY) {
 			throw new RuntimeException ("Current model is not an assembly.");
 		}
-		Assembly assembly = (Assembly) currModel;
-		ModelDescriptor descr = pfcModel.ModelDescriptor_CreateFromFileName (compFileName);
-		Solid compModel = (Solid)session.GetModelFromDescr (descr);
+		Assembly assembly = (Assembly) compModelAndAsmModel.getAsmModel();
+		Solid compModel = (Solid)compModelAndAsmModel.getCompModel();
 		
 		if (compModel == null) {
 			session.UIShowMessageDialog("Компонент не найден!", null);
@@ -69,11 +69,11 @@ public class Component {
 		/*-----------------------------------------------------------------*\
 		Find the assembly datum 
 		\*-----------------------------------------------------------------*/
-		ModelItem asmItem = assembly.GetItemByName (ModelItemType.ITEM_COORD_SYS, asmCsysName);
+		ModelItem asmItem = assembly.GetItemByName (ModelItemType.ITEM_COORD_SYS, refCoordSystems.getAsmCsysName());
 		/*-----------------------------------------------------------------*\
 		Find the component datum
 		\*-----------------------------------------------------------------*/
-		ModelItem compItem = compModel.GetItemByName (ModelItemType.ITEM_COORD_SYS, compCsysName);
+		ModelItem compItem = compModel.GetItemByName (ModelItemType.ITEM_COORD_SYS, refCoordSystems.getCompCsysName());
 		/*-----------------------------------------------------------------*\
 		For the assembly reference, initialize a component path.
 		This is necessary even if the reference geometry is in the assembly.
@@ -95,7 +95,7 @@ public class Component {
 		/*-----------------------------------------------------------------*\
 		Set the assembly component constraints and regenerate the assembly.
 		\*-----------------------------------------------------------------*/
-		asmComp.SetName(compFileName.substring(0, compFileName.length()-4));
+		asmComp.SetName(compModelAndAsmModel.getCompModel().GetFullName());
 		asmComp.SetConstraints (constrs, null);
 	}
 
