@@ -1,25 +1,15 @@
 package ru.ruselprom.argument.assembly;
 
 import com.ptc.pfc.pfcModel.Model;
-import com.ptc.pfc.pfcSession.Session;
 
 public class CompModelAndAsmModel {
-	private Session session;
+	
 	Model compModel;
 	Model asmModel;
 	
-	public CompModelAndAsmModel(Session session, Model compModel, Model asmModel) {
-		this.session = session;
+	public CompModelAndAsmModel(Model compModel, Model asmModel) {
 		this.compModel = compModel;
 		this.asmModel = asmModel;
-	}
-
-	public Session getSession() {
-		return session;
-	}
-
-	public void setSession(Session session) {
-		this.session = session;
 	}
 
 	public Model getCompModel() {
@@ -37,5 +27,4 @@ public class CompModelAndAsmModel {
 	public void setAsmModel(Model asmModel) {
 		this.asmModel = asmModel;
 	}
-	
 }

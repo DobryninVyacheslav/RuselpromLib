@@ -40,7 +40,7 @@ public class Component {
 		this.session = session;
 	}
 
-	public void addToAsmByCsys (RefCoordSystems refCoordSystems, CompModelAndAsmModel compModelAndAsmModel) throws jxthrowable {
+	public void addToAsmByCsys (CompModelAndAsmModel compModelAndAsmModel, RefCoordSystems refCoordSystems) throws jxthrowable {
 		
 		Matrix3D identityMatrix = createIdentityMatrix();
 		Transform3D transf = pfcBase.Transform3D_Create (identityMatrix);
