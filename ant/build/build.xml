@@ -21,9 +21,9 @@
 	</target>
 
 	<target name="copy" depends="create">
-		<copydir src="D:\Common_Pro\Dobrynin\git\java-api-creo\RuselpromLib\src" dest="D:\Common_Pro\Dobrynin\git\java-api-creo\RuselpromLib\ant\build\src">
+		<copydir src="D:\Common_Pro\Dobrynin\RuselpromLib\src" dest="D:\Common_Pro\Dobrynin\RuselpromLib\ant\build\src">
 		</copydir>
-		<copy todir="D:\Common_Pro\Dobrynin\git\java-api-creo\RuselpromLib\ant\build\lib" overwrite="true">
+		<copy todir="D:\Common_Pro\Dobrynin\RuselpromLib\ant\build\lib" overwrite="true">
 			<fileset dir="C:\Program Files\PTC\Creo 5.0.2.0\Common Files\text\java" includes="otk.jar">
 			</fileset>
 		</copy>
@@ -32,15 +32,15 @@
 	<target name="compile" depends="copy">
 		<javac 	classpathref="classpath"
 				includeantruntime="true"
-				srcdir="D:\Common_Pro\Dobrynin\git\java-api-creo\RuselpromLib\ant\build\src"
-				destdir="D:\Common_Pro\Dobrynin\git\java-api-creo\RuselpromLib\ant\build\bin"
+				srcdir="D:\Common_Pro\Dobrynin\RuselpromLib\ant\build\src"
+				destdir="D:\Common_Pro\Dobrynin\RuselpromLib\ant\build\bin"
 				includes="**/*.java"
 				/>
 	</target>
 
 	<target name="jar" depends="compile">
 		<jar destfile="RuselpromLib.jar" compress="false">
-			<fileset dir="D:\Common_Pro\Dobrynin\git\java-api-creo\RuselpromLib\ant\build\bin">
+			<fileset dir="D:\Common_Pro\Dobrynin\RuselpromLib\ant\build\bin">
 				<include name="**/*.class" />
 			</fileset>
 		<!--	<zipgroupfileset dir=".\lib" includes="**/*.jar" />
