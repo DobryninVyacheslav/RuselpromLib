@@ -17,43 +17,37 @@ import com.ptc.wfc.wfcFeature.PatternType;
 import com.ptc.wfc.wfcFeature.WFeature;
 import com.ptc.wfc.wfcSession.WSession;
 
-public class TwoTransPattern {
+import ru.ruselprom.base.CreoObject;
+
+public class TwoTransPattern extends CreoObject {
 	
 	private String firstRefPlaneName;
 	private String secondRefPlaneName;
-	private Session session;
 	
+
 	public TwoTransPattern(String firstRefPlaneName, String secondRefPlaneName, Session session) {
-		this.firstRefPlaneName = firstRefPlaneName;
-		this.secondRefPlaneName = secondRefPlaneName;
-		this.session = session;
-	}
-		
-	public String getFirstRefPlaneName() {
-		return firstRefPlaneName;
-	}
+        super(session);
+        this.firstRefPlaneName = firstRefPlaneName;
+        this.secondRefPlaneName = secondRefPlaneName;
+    }
+	
+    public String getFirstRefPlaneName() {
+        return firstRefPlaneName;
+    }
 
-	public void setFirstRefPlaneName(String firstRefPlaneName) {
-		this.firstRefPlaneName = firstRefPlaneName;
-	}
+    public void setFirstRefPlaneName(String firstRefPlaneName) {
+        this.firstRefPlaneName = firstRefPlaneName;
+    }
 
-	public String getSecondRefPlaneName() {
-		return secondRefPlaneName;
-	}
+    public String getSecondRefPlaneName() {
+        return secondRefPlaneName;
+    }
 
-	public void setSecondRefPlaneName(String secondRefPlaneName) {
-		this.secondRefPlaneName = secondRefPlaneName;
-	}
+    public void setSecondRefPlaneName(String secondRefPlaneName) {
+        this.secondRefPlaneName = secondRefPlaneName;
+    }
 
-	public Session getSession() {
-		return session;
-	}
-
-	public void setSession(Session session) {
-		this.session = session;
-	}
-
-	public void patternBuild(int numFirstDirItems, double offsetFirstDir, int numSecondDirItems, double offsetSecondDir, String newItemName, String refItemName, Solid currSolid) throws jxthrowable {
+    public void patternBuild(int numFirstDirItems, double offsetFirstDir, int numSecondDirItems, double offsetSecondDir, String newFeatName, String refFeatName, Solid currSolid) throws jxthrowable {
 		try {
 		    Surface plane1 = (Surface)currSolid.GetFeatureByName(firstRefPlaneName).ListSubItems(ModelItemType.ITEM_SURFACE).get(0);
 		    Selection refPlaneFirstDir = pfcSelect.CreateModelItemSelection(plane1, null);
@@ -75,7 +69,7 @@ public class TwoTransPattern {
 		    elements.append(elem_1_1);
 		    
 		    //PRO_E_STD_FEATURE_NAME
-		    Element elem_1_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_STD_FEATURE_NAME,pfcArgument.CreateStringArgValue(newItemName),1);		//Feature Name PRO_VALUE_TYPE_WSTRING
+		    Element elem_1_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_STD_FEATURE_NAME,pfcArgument.CreateStringArgValue(newFeatName),1);		//Feature Name PRO_VALUE_TYPE_WSTRING
 		    elements.append(elem_1_2);
 		    
 		    //PRO_E_GENPAT_DIR
@@ -156,7 +150,7 @@ public class TwoTransPattern {
 		    
 		    ElementTree	elemTree = ((WSession)session).CreateElementTree(elements);
 		    
-		    WFeature patternFeat = (WFeature)currSolid.GetFeatureByName(refItemName);
+		    WFeature patternFeat = (WFeature)currSolid.GetFeatureByName(refFeatName);
 		    patternFeat.CreatePattern(elemTree, PatternType.FEAT_PATTERN);
 		} catch (jxthrowable e) {
 			session.UIShowMessageDialog("Error in TwoTransPattern - " + e, null);

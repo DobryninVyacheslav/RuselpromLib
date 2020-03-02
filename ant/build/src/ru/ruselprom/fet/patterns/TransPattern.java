@@ -17,23 +17,26 @@ import com.ptc.wfc.wfcFeature.PatternType;
 import com.ptc.wfc.wfcFeature.WFeature;
 import com.ptc.wfc.wfcSession.WSession;
 
-public class TransPattern {
-	
-	private Session session;
-	
-	public TransPattern(Session session) {
-		this.session = session;
-	}
-	
-	public Session getSession() {
-		return session;
-	}
+import ru.ruselprom.base.CreoObject;
 
-	public void setSession(Session session) {
-		this.session = session;
-	}
+public class TransPattern extends CreoObject {
+    
+    private String refPlaneName;
 
-	public void patternBuild(int numItems, double offset, String itemName, String refPlaneName, String refItemName, Solid currSolid) throws jxthrowable {
+    public TransPattern(String refPlaneName, Session session) {
+        super(session);
+        this.refPlaneName = refPlaneName;
+    }
+
+    public String getRefPlaneName() {
+        return refPlaneName;
+    }
+
+    public void setRefPlaneName(String refPlaneName) {
+        this.refPlaneName = refPlaneName;
+    }
+
+    public void patternBuild(int numItems, double offset, String newFeatName, String refFeatName, Solid currSolid) throws jxthrowable {
 		try {		    
 		    Surface plane = (Surface)currSolid.GetFeatureByName(refPlaneName).ListSubItems(ModelItemType.ITEM_SURFACE).get(0);
 		    Selection refPlane =  pfcSelect.CreateModelItemSelection(plane, null);
@@ -52,7 +55,7 @@ public class TransPattern {
 		    elements.append(elem_1_1);
 		    
 		    //PRO_E_STD_FEATURE_NAME
-		    Element elem_1_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_STD_FEATURE_NAME,pfcArgument.CreateStringArgValue(itemName),1);		//Feature Name PRO_VALUE_TYPE_WSTRING
+		    Element elem_1_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_STD_FEATURE_NAME,pfcArgument.CreateStringArgValue(newFeatName),1);		//Feature Name PRO_VALUE_TYPE_WSTRING
 		    elements.append(elem_1_2);
 		    
 		    //PRO_E_GENPAT_DIR
@@ -97,12 +100,12 @@ public class TransPattern {
 		    
 		    
 		    ElementTree	elemTree = ((WSession)session).CreateElementTree(elements);
-		    WFeature patternFeat = (WFeature)currSolid.GetFeatureByName(refItemName);
+		    WFeature patternFeat = (WFeature)currSolid.GetFeatureByName(refFeatName);
 		    patternFeat.CreatePattern(elemTree, PatternType.FEAT_PATTERN);
 		    
 			
 		} catch (jxthrowable e) {
-			session.UIShowMessageDialog("������ � �������!", null);
+			session.UIShowMessageDialog("Error in TransPattern!", null);
 		}
 		
 	}
