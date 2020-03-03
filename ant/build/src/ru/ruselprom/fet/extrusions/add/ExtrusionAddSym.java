@@ -3,12 +3,12 @@ package ru.ruselprom.fet.extrusions.add;
 import com.ptc.cipjava.jxthrowable;
 import com.ptc.pfc.pfcArgument.pfcArgument;
 import com.ptc.pfc.pfcFeature.Feature;
-import com.ptc.pfc.pfcModel.Model;
 import com.ptc.pfc.pfcSelect.Selection;
 import com.ptc.pfc.pfcSelect.pfcSelect;
 import com.ptc.pfc.pfcSession.CreoCompatibility;
 import com.ptc.pfc.pfcSession.Session;
 import com.ptc.pfc.pfcSession.pfcSession;
+import com.ptc.pfc.pfcSolid.Solid;
 import com.ptc.wfc.wfcElemIds.wfcElemIds;
 import com.ptc.wfc.wfcElementTree.Element;
 import com.ptc.wfc.wfcElementTree.ElementTree;
@@ -23,27 +23,28 @@ import com.ptc.wfc.wfcSolid.WSolid;
 import com.ptc.wfc.wfcSolidInstructions.WRegenInstructions;
 import com.ptc.wfc.wfcSolidInstructions.wfcSolidInstructions;
 
+import ru.ruselprom.base.CreoObject;
 
-public class ExtrusionAddSym {
-	public void modelBuild(int depth, Model template, String itemName, String sectionName)  throws jxthrowable {
+
+public class ExtrusionAddSym extends CreoObject {
+    
+	public ExtrusionAddSym(Session session) {
+        super(session);
+    }
+
+    public void modelBuild(int depth, String newFeatName, String refSecName, Solid currSolid)  throws jxthrowable {
 		try {
-			Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
-			WSession wSession = (WSession)session;
-			Model currModel = session.GetCurrentModel();
-		    WSolid currSolid = (WSolid)currModel;
-			
-			//((Dimension)(((Feature)items.get(12)).ListSubItems(ModelItemType.ITEM_DIMENSION)).get(0)).SetDimValue(10);
-			Feature section = currSolid.GetFeatureByName(sectionName);
+			Feature section = currSolid.GetFeatureByName(refSecName);
 			Selection refSection =  pfcSelect.CreateModelItemSelection(section, null);
 			
 			Elements elements = Elements.create();
 			
 			//PRO_E_FEATURE_TREE
-			Element elem_0_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_FEATURE_TREE,null,0);												//
+			Element elem_0_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_FEATURE_TREE,null,0);
 		    elements.append(elem_0_0);
 		    
 		    //PRO_E_STD_FEATURE_NAME
-		    Element elem_1_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_STD_FEATURE_NAME, pfcArgument.CreateStringArgValue(itemName),1);	//Feature Name 
+		    Element elem_1_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_STD_FEATURE_NAME, pfcArgument.CreateStringArgValue(newFeatName),1);	//Feature Name 
 		    elements.append(elem_1_0); 
 		    
 		    //PRO_E_FEATURE_FORM
@@ -75,7 +76,7 @@ public class ExtrusionAddSym {
 		    elements.append(elem_3_0);
 		    
 		    //PRO_E_EXT_DEPTH_FROM_VALUE
-		    Element elem_3_1 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_EXT_DEPTH_FROM_VALUE, pfcArgument.CreateDoubleArgValue(depth),3);//������� ������������ >= 0.0
+		    Element elem_3_1 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_EXT_DEPTH_FROM_VALUE, pfcArgument.CreateDoubleArgValue(depth),3);// >= 0.0
 		    elements.append(elem_3_1);
 		    
 		    //PRO_E_EXT_DEPTH_TO
@@ -94,12 +95,12 @@ public class ExtrusionAddSym {
 		    Element elem_2_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_SEC_USE_SKETCH, pfcArgument.CreateSelectionArgValue(refSection),2);//PRO_VALUE_TYPE_SELECTION (PRO_FEATURE)
 		    elements.append(elem_2_2);  
 		    		   
-		    ElementTree	elemTree = wSession.CreateElementTree(elements);
+		    ElementTree	elemTree = ((WSession)session).CreateElementTree(elements);
 		    
 		    FeatCreateOptions featOpts = FeatCreateOptions.create();
 		    featOpts.append(FeatCreateOption.FEAT_CR_INCOMPLETE_FEAT);
 		    WRegenInstructions regenInstr = wfcSolidInstructions.WRegenInstructions_Create();
-		    WFeature extrudeFeat = currSolid.WCreateFeature(elemTree,featOpts,regenInstr);
+		    WFeature extrudeFeat = ((WSolid)currSolid).WCreateFeature(elemTree,featOpts,regenInstr);
 		    elemTree = extrudeFeat.GetElementTree(null,FeatureElemTreeExtractOptions.FEAT_EXTRACT_NO_OPTS);
 		    
 		    featOpts.insert(0, FeatCreateOption.FEAT_CR_NO_OPTS);
@@ -107,25 +108,7 @@ public class ExtrusionAddSym {
 		    
 		} catch (jxthrowable e) {
 			Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
-			session.UIShowMessageDialog("Ошибка - " + e, null);
+			session.UIShowMessageDialog("Error in ExtrusionAddSym - " + e, null);
 	    }
 	}
-	
-//	static Element GetSketcherElement(ElementTree elemTree) throws jxthrowable {
-//		try {	
-//			ElemPathItems sketchItems =  ElemPathItems.create();
-//			ElemPathItem sketchItem0 =  wfcElementTree.ElemPathItem_Create(ElemPathItemType.ELEM_PATH_ITEM_TYPE_ID,wfcElemIds.PRO_E_STD_SECTION);
-//			sketchItems.append(sketchItem0);
-//			ElemPathItem sketchItem1 =  wfcElementTree.ElemPathItem_Create(ElemPathItemType.ELEM_PATH_ITEM_TYPE_ID,wfcElemIds.PRO_E_SKETCHER);
-//			sketchItems.append(sketchItem1);
-//			ElementPath sketchPath = wfcElementTree.ElementPath_Create(sketchItems);
-//			Element element = elemTree.GetElement(sketchPath);
-//			return(element); 
-//	    }
-//		catch (Exception e) {
-//			Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
-//			session.UIShowMessageDialog(" PRO_E_SKETCHER!", null);
-//	    }
-//		return null;
-//    }
 }

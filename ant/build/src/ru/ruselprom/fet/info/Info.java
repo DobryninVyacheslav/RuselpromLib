@@ -12,23 +12,15 @@ import com.ptc.pfc.pfcSession.Session;
 import com.ptc.pfc.pfcSolid.Solid;
 import com.ptc.wfc.wfcComponentFeat.WComponentFeat;
 
-public class Info {
-	
-	private Session session;
+import ru.ruselprom.base.CreoObject;
+
+public class Info extends CreoObject{
 	
 	public Info(Session session) {
-		this.session = session;
-	}
-	
-	public Session getSession() {
-		return session;
-	}
+        super(session);
+    }
 
-	public void setSession(Session session) {
-		this.session = session;
-	}
-
-	public void getFeatInfoIn(Model currModel) throws jxthrowable {
+    public void getFeatInfoIn(Model currModel) throws jxthrowable {
 		try {
 			ModelItems items = currModel.ListItems(ModelItemType.ITEM_FEATURE);
 			int quan;
@@ -44,7 +36,7 @@ public class Info {
 			session.UIShowMessageDialog(allname.toString(), null);
 			
 		} catch (jxthrowable e) {
-			session.UIShowMessageDialog("Ошибка - " + e, null);
+			session.UIShowMessageDialog("Error in info.gerFeatInfoIn(Model) - " + e, null);
 		}
 	}
 	
@@ -61,7 +53,7 @@ public class Info {
 			}
 			session.UIShowMessageDialog(allname.toString(), null);
 		} catch (jxthrowable e) {
-			session.UIShowMessageDialog("Error in info.getFlexFeatInfoin(Model)!", null);
+			session.UIShowMessageDialog("Error in info.getFlexFeatInfoin(Model) - " + e, null);
 		}
 		
 	}
@@ -92,6 +84,5 @@ public class Info {
 		}
 		session.UIShowMessageDialog(allname.toString(), null);
 	}
-	
 }
 

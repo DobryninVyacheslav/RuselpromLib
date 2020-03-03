@@ -21,30 +21,22 @@ import com.ptc.wfc.wfcSolid.WSolid;
 import com.ptc.wfc.wfcSolidInstructions.WRegenInstructions;
 import com.ptc.wfc.wfcSolidInstructions.wfcSolidInstructions;
 
-public class ExtrusionAddOneWay {
-	
-	private Session session;
+import ru.ruselprom.base.CreoObject;
+
+public class ExtrusionAddOneWay extends CreoObject {
 	
 	public ExtrusionAddOneWay(Session session) {
-		this.session = session;
-	}
-	
-	public Session getSession() {
-		return session;
-	}
+        super(session);
+    }
 
-	public void setSession(Session session) {
-		this.session = session;
-	}
-
-	public void modelBuild(int depth, String newFeatName, String refSecName, Solid currSolid)  throws jxthrowable {
+    public void modelBuild(int depth, String newFeatName, String refSecName, Solid currSolid)  throws jxthrowable {
 		try {
-		    Feature section = extracted(refSecName, currSolid);
+		    Feature section = getFeatByName(refSecName, currSolid);
 			Selection refSection =  pfcSelect.CreateModelItemSelection(section, null);
 			Elements elements = Elements.create();
 			
 			//PRO_E_FEATURE_TREE
-			Element elem_0_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_FEATURE_TREE,null,0);												//
+			Element elem_0_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_FEATURE_TREE,null,0);
 		    elements.append(elem_0_0);
 		    
 		    //PRO_E_STD_FEATURE_NAME
@@ -111,11 +103,11 @@ public class ExtrusionAddOneWay {
 		    extrudeFeat.RedefineFeature(null,elemTree,featOpts,regenInstr);
 		    
 		} catch (jxthrowable e) {
-			session.UIShowMessageDialog("Ошибка - " + e, null);
+			session.UIShowMessageDialog("Error in ExtrusionAddOneWay - " + e, null);
 	    }
 	}
 
-    private Feature extracted(String refSecName, Solid currSolid) throws jxthrowable {
+    private Feature getFeatByName(String refSecName, Solid currSolid) throws jxthrowable {
         Feature section = null;
         try {
             section = currSolid.GetFeatureByName(refSecName);		        
@@ -124,22 +116,4 @@ public class ExtrusionAddOneWay {
         }
         return section;
     }
-	
-//	static Element GetSketcherElement(ElementTree elemTree) throws jxthrowable {
-//		try {	
-//			ElemPathItems sketchItems =  ElemPathItems.create();
-//			ElemPathItem sketchItem0 =  wfcElementTree.ElemPathItem_Create(ElemPathItemType.ELEM_PATH_ITEM_TYPE_ID,wfcElemIds.PRO_E_STD_SECTION);
-//			sketchItems.append(sketchItem0);
-//			ElemPathItem sketchItem1 =  wfcElementTree.ElemPathItem_Create(ElemPathItemType.ELEM_PATH_ITEM_TYPE_ID,wfcElemIds.PRO_E_SKETCHER);
-//			sketchItems.append(sketchItem1);
-//			ElementPath sketchPath = wfcElementTree.ElementPath_Create(sketchItems);
-//			Element element = elemTree.GetElement(sketchPath);
-//			return(element); 
-//	    }
-//		catch (Exception e) {
-//			Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
-//			session.UIShowMessageDialog("������ ��� ��������� �������� PRO_E_SKETCHER!", null);
-//	    }
-//		return null;
-//    }
 }

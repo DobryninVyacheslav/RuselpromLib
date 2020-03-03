@@ -21,26 +21,17 @@ import com.ptc.wfc.wfcSolid.WSolid;
 import com.ptc.wfc.wfcSolidInstructions.WRegenInstructions;
 import com.ptc.wfc.wfcSolidInstructions.wfcSolidInstructions;
 
+import ru.ruselprom.base.CreoObject;
 
-public class ExtrusionCut {
-	
-	private Session session;
+
+public class ExtrusionCut extends CreoObject {
 	
 	public ExtrusionCut(Session session) {
-		this.session = session;
-	}
+        super(session);
+    }
 
-	public Session getSession() {
-		return session;
-	}
-
-	public void setSession(Session session) {
-		this.session = session;
-	}
-	
-	public void modelBuild(String newFeatName, String refSecName, Solid currSolid)  throws jxthrowable {
+    public void modelBuild(String newFeatName, String refSecName, Solid currSolid)  throws jxthrowable {
 		try {
-			
 			Feature section = currSolid.GetFeatureByName(refSecName);
 			Selection refSection =  pfcSelect.CreateModelItemSelection(section, null);
 			
@@ -114,8 +105,8 @@ public class ExtrusionCut {
 		    extrudeFeat.RedefineFeature(null,elemTree,featOpts,regenInstr);
 		    
 		}
-		catch (Exception e)	{
-			session.UIShowMessageDialog("������ ��� ���������!", null);
+		catch (jxthrowable e)	{
+			session.UIShowMessageDialog("Error in ExtrusionCut - " + e, null);
 	    }
 	}
 	
