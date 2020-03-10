@@ -1,23 +1,22 @@
 package ru.ruselprom.base;
 
 public class AuxiliaryPoint {
-	private double coordinateX;
-	private double coordinateY;
-	
-	public AuxiliaryPoint(double coordinateX, double coordinateY) {
-		this.coordinateX = coordinateX;
-		this.coordinateY = coordinateY;
-	}
-	public double getCoordinateX() {
-		return coordinateX;
-	}
-	public void setCoordinateX(double coordinateX) {
-		this.coordinateX = coordinateX;
-	}
-	public double getCoordinateY() {
-		return coordinateY;
-	}
-	public void setCoordinateY(double coordinateY) {
-		this.coordinateY = coordinateY;
-	}
+	private double x;
+	private double y;
+    public AuxiliaryPoint(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+    public double getX() {
+        return x;
+    }
+    public void setX(double x) {
+        this.x = x;
+    }
+    public double getY() {
+        return y;
+    }
+    public void setY(double y) {
+        this.y = y;
+    }
 }
