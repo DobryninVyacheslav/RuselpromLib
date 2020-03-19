@@ -23,7 +23,6 @@ import com.ptc.pfc.pfcSession.Session;
 import com.ptc.pfc.pfcSolid.Solid;
 
 import ru.ruselprom.argument.assembly.RefCoordSystems;
-import ru.ruselprom.base.AbstractComponentOfAsm;
 
 public class ComponentOfAsm extends AbstractComponentOfAsm {
 

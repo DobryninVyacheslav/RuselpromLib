@@ -1,7 +1,9 @@
-package ru.ruselprom.base;
+package ru.ruselprom.assembly.adding;
 
 import com.ptc.pfc.pfcModel.Model;
 import com.ptc.pfc.pfcSession.Session;
+
+import ru.ruselprom.base.CreoModel;
 
 public abstract class AbstractComponentOfAsm extends CreoModel {
 

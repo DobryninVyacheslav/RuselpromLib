@@ -30,7 +30,6 @@ import com.ptc.wfc.wfcComponentFeat.wfcComponentFeat;
 
 import ru.ruselprom.argument.assembly.FlexDimensions;
 import ru.ruselprom.argument.assembly.RefCoordSystems;
-import ru.ruselprom.base.AbstractComponentOfAsm;
 
 public class ComponentOfAsmWithFlex extends AbstractComponentOfAsm{
 
