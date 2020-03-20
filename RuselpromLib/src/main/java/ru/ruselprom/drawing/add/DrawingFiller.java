@@ -36,7 +36,7 @@ public class DrawingFiller extends CreoObject {
         try {
             Transform3D transf = currModel.RetrieveView(view.toString()).GetTransform();
             Matrix3D matrix = transf.GetMatrix();
-            NormalizeMatrix(matrix);
+            normalizeMatrix(matrix);
             transf.SetMatrix(matrix);
             GeneralViewCreateInstructions instrs = pfcView2D.GeneralViewCreateInstructions_Create (currModel, drawing.GetCurrentSheetNumber(), viewLocation(x,y,z), transf);
             instrs.SetScale(scale);
@@ -48,7 +48,7 @@ public class DrawingFiller extends CreoObject {
         }
     }
     
-    public void setViewLocation(double x, double y, double z) throws jxthrowable {
+    public void setViewLocation(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -62,7 +62,7 @@ public class DrawingFiller extends CreoObject {
         return location;
     }
     
-    private void NormalizeMatrix(Matrix3D matrix) throws jxthrowable {
+    private void normalizeMatrix(Matrix3D matrix) throws jxthrowable {
         // Remove the shift
         for (int i = 0; i < 3; ++i) {
             matrix.set(3, i, 0.0);
