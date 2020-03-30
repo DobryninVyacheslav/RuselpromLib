@@ -34,6 +34,7 @@ public class DrawingFiller extends CreoObject {
     
     public void createView (double scale, OrientViews view, Model currModel) throws jxthrowable {
         try {
+        	currModel.Display();
             Transform3D transf = currModel.RetrieveView(view.toString()).GetTransform();
             Matrix3D matrix = transf.GetMatrix();
             normalizeMatrix(matrix);
