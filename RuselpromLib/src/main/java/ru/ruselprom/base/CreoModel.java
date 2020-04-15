@@ -1,13 +1,11 @@
 package ru.ruselprom.base;
 
 import com.ptc.pfc.pfcModel.Model;
-import com.ptc.pfc.pfcSession.Session;
 
-public abstract class CreoModel extends CreoObject {
+public abstract class CreoModel {
     protected Model currModel;
 
-    public CreoModel(Model currModel, Session session) {
-        super(session);
+    public CreoModel(Model currModel) {
         this.currModel = currModel;
     }
 

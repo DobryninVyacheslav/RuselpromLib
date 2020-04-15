@@ -6,21 +6,18 @@ import com.ptc.pfc.pfcBase.Point3D;
 import com.ptc.pfc.pfcBase.Transform3D;
 import com.ptc.pfc.pfcDrawing.Drawing;
 import com.ptc.pfc.pfcModel.Model;
-import com.ptc.pfc.pfcSession.Session;
 import com.ptc.pfc.pfcView2D.GeneralViewCreateInstructions;
 import com.ptc.pfc.pfcView2D.pfcView2D;
 
-import ru.ruselprom.base.CreoObject;
 import ru.ruselprom.base.OrientViews;
 
-public class DrawingFiller extends CreoObject {
+public class DrawingFiller {
     private Drawing drawing;
     private double x = 0;
     private double y = 0;
     private double z = 0;
     
-    public DrawingFiller(Drawing drawing, Session session) {
-        super(session);
+    public DrawingFiller(Drawing drawing) {
         this.drawing = drawing;
     }
 
@@ -33,20 +30,16 @@ public class DrawingFiller extends CreoObject {
     }
     
     public void createView (double scale, OrientViews view, Model currModel) throws jxthrowable {
-        try {
-        	currModel.Display();
-            Transform3D transf = currModel.RetrieveView(view.toString()).GetTransform();
-            Matrix3D matrix = transf.GetMatrix();
-            normalizeMatrix(matrix);
-            transf.SetMatrix(matrix);
-            GeneralViewCreateInstructions instrs = pfcView2D.GeneralViewCreateInstructions_Create (currModel, drawing.GetCurrentSheetNumber(), viewLocation(x,y,z), transf);
-            instrs.SetScale(scale);
-            drawing.Display();
-            drawing.SetSheetScale(drawing.GetCurrentSheetNumber(), 2.0, null);
-            drawing.CreateView (instrs);
-        } catch (jxthrowable  e) {
-            session.UIShowMessageDialog("Error - " + e, null);
-        }
+    	currModel.Display();
+        Transform3D transf = currModel.RetrieveView(view.toString()).GetTransform();
+        Matrix3D matrix = transf.GetMatrix();
+        normalizeMatrix(matrix);
+        transf.SetMatrix(matrix);
+        GeneralViewCreateInstructions instrs = pfcView2D.GeneralViewCreateInstructions_Create (currModel, drawing.GetCurrentSheetNumber(), viewLocation(x,y,z), transf);
+        instrs.SetScale(scale);
+        drawing.Display();
+        drawing.SetSheetScale(drawing.GetCurrentSheetNumber(), 2.0, null);
+        drawing.CreateView (instrs);
     }
     
     public void setViewLocation(double x, double y, double z) {

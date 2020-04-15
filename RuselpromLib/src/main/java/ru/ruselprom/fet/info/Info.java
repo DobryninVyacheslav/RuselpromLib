@@ -8,63 +8,53 @@ import com.ptc.pfc.pfcFeature.Features;
 import com.ptc.pfc.pfcModel.Model;
 import com.ptc.pfc.pfcModelItem.ModelItemType;
 import com.ptc.pfc.pfcModelItem.ModelItems;
+import com.ptc.pfc.pfcSession.CreoCompatibility;
 import com.ptc.pfc.pfcSession.Session;
+import com.ptc.pfc.pfcSession.pfcSession;
 import com.ptc.pfc.pfcSolid.Solid;
 import com.ptc.wfc.wfcComponentFeat.WComponentFeat;
 
-import ru.ruselprom.base.CreoObject;
-
-public class Info extends CreoObject{
-	
-	public Info(Session session) {
-        super(session);
-    }
+public class Info {
 
     public void getFeatInfoIn(Model currModel) throws jxthrowable {
-		try {
-			ModelItems items = currModel.ListItems(ModelItemType.ITEM_FEATURE);
-			int quan;
-			String name;
-			StringBuilder allname = new StringBuilder();
-						
-			for (int j = 0; j < items.getarraysize(); j++) {
-				name = ((Feature)items.get(j)).GetName();
-				quan = ((Feature)items.get(j)).ListSubItems(ModelItemType.ITEM_FEATURE).getarraysize();
-				allname.append(j + ") " + name + ": " + quan + "\n");
-			}
-						
-			session.UIShowMessageDialog(allname.toString(), null);
-			
-		} catch (jxthrowable e) {
-			session.UIShowMessageDialog("Error in info.gerFeatInfoIn(Model) - " + e, null);
+    	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
+		ModelItems items = currModel.ListItems(ModelItemType.ITEM_FEATURE);
+		int quan;
+		String name;
+		StringBuilder allname = new StringBuilder();
+					
+		for (int j = 0; j < items.getarraysize(); j++) {
+			name = ((Feature)items.get(j)).GetName();
+			quan = ((Feature)items.get(j)).ListSubItems(ModelItemType.ITEM_FEATURE).getarraysize();
+			allname.append(j + ") " + name + ": " + quan + "\n");
 		}
+					
+		session.UIShowMessageDialog(allname.toString(), null);
 	}
 	
 	public void getFlexFeatInfoIn(Model currModel) throws jxthrowable {
-		try {
-			ModelItems items = currModel.ListItems(ModelItemType.ITEM_FEATURE);
-			StringBuilder allname = new StringBuilder();
-			for (int i = 0;i < items.getarraysize(); i++) {
-				try {
-					allname.append(i + ": " + Boolean.toString(((WComponentFeat)items.get(i)).IsFlexible()) + "\n");
-				} catch (Exception e) {
-					allname.append(i + ": " + "false" + "\n");
-				}
+		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
+		ModelItems items = currModel.ListItems(ModelItemType.ITEM_FEATURE);
+		StringBuilder allname = new StringBuilder();
+		for (int i = 0;i < items.getarraysize(); i++) {
+			try {
+				allname.append(i + ": " + Boolean.toString(((WComponentFeat)items.get(i)).IsFlexible()) + "\n");
+			} catch (Exception e) {
+				allname.append(i + ": " + "false" + "\n");
 			}
-			session.UIShowMessageDialog(allname.toString(), null);
-		} catch (jxthrowable e) {
-			session.UIShowMessageDialog("Error in info.getFlexFeatInfoin(Model) - " + e, null);
 		}
-		
+		session.UIShowMessageDialog(allname.toString(), null);
 	}
 	
 	public void getCompSizeInfoIn(Model currModel) throws jxthrowable {
+		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		Solid currSolid = (Solid)currModel;
 		Features feats = currSolid.ListFeaturesByType(Boolean.TRUE, FeatureType.FEATTYPE_COMPONENT);
 		session.UIShowMessageDialog(Integer.toString(feats.getarraysize()),null);
 	}
 	
 	public void getParamsInfoIn(Model currModel) throws jxthrowable{
+		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		StringBuilder paramNames = new StringBuilder();
 		for (int i = 0;i < currModel.ListParams().getarraysize();i++) {
 			paramNames.append(currModel.ListParams().get(i).GetName() + "\n");
@@ -73,6 +63,7 @@ public class Info extends CreoObject{
 	}
 	
 	public void getDimensionsInfoIn(String nameFeat, Solid currSolid) throws jxthrowable {
+		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		String name = "";
 		double value;
 		StringBuilder allname = new StringBuilder();

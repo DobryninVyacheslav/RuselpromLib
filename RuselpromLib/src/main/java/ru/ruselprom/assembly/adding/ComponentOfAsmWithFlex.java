@@ -19,7 +19,9 @@ import com.ptc.pfc.pfcModelItem.ModelItem;
 import com.ptc.pfc.pfcModelItem.ModelItemType;
 import com.ptc.pfc.pfcSelect.Selection;
 import com.ptc.pfc.pfcSelect.pfcSelect;
+import com.ptc.pfc.pfcSession.CreoCompatibility;
 import com.ptc.pfc.pfcSession.Session;
+import com.ptc.pfc.pfcSession.pfcSession;
 import com.ptc.pfc.pfcSolid.Solid;
 import com.ptc.wfc.wfcAssembly.WAssembly;
 import com.ptc.wfc.wfcComponentFeat.AssemblyItem;
@@ -33,12 +35,13 @@ import ru.ruselprom.argument.assembly.RefCoordSystems;
 
 public class ComponentOfAsmWithFlex extends AbstractComponentOfAsm{
 
-	public ComponentOfAsmWithFlex(Model currModel, Session session) {
-        super(currModel, session);
+	public ComponentOfAsmWithFlex(Model currModel) {
+        super(currModel);
     }
 
     public void addToAsmByCsys (Model currCompModel, FlexDimensions flexDims, RefCoordSystems refCoordSystems) throws jxthrowable {
-		Matrix3D identityMatrix = createIdentityMatrix();
+    	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
+    	Matrix3D identityMatrix = createIdentityMatrix();
 		Transform3D transf = pfcBase.Transform3D_Create (identityMatrix);
 		/*-----------------------------------------------------------------*\
 		Check the current assembly
@@ -99,26 +102,22 @@ public class ComponentOfAsmWithFlex extends AbstractComponentOfAsm{
 	}
 
 	private void makeCompFlex(String dimensionName, ComponentFeat asmComp, Solid compModel, Model currModel) throws jxthrowable {
-		try {
-			WAssembly wAsm = (WAssembly)(currModel);
-			Solid currSolid = (Solid)currModel;
-			ComponentFeat cFeat = (ComponentFeat)currSolid.GetFeatureByName(asmComp.GetName());
-			WComponentFeat wCFeat = (WComponentFeat)(cFeat);
-			AssemblyItems asmItemArray = AssemblyItems.create();
-			AssemblyItemInstructions thisAsmInstr = wfcComponentFeat.AssemblyItemInstructions_Create(compModel, ModelItemType.ITEM_DIMENSION, 0);
-			thisAsmInstr.SetItemName(dimensionName);
-			AssemblyItem thisAsmItem = wAsm.CreateAssemblyItem(thisAsmInstr);
-			asmItemArray.append(thisAsmItem);
+		WAssembly wAsm = (WAssembly)(currModel);
+		Solid currSolid = (Solid)currModel;
+		ComponentFeat cFeat = (ComponentFeat)currSolid.GetFeatureByName(asmComp.GetName());
+		WComponentFeat wCFeat = (WComponentFeat)(cFeat);
+		AssemblyItems asmItemArray = AssemblyItems.create();
+		AssemblyItemInstructions thisAsmInstr = wfcComponentFeat.AssemblyItemInstructions_Create(compModel, ModelItemType.ITEM_DIMENSION, 0);
+		thisAsmInstr.SetItemName(dimensionName);
+		AssemblyItem thisAsmItem = wAsm.CreateAssemblyItem(thisAsmInstr);
+		asmItemArray.append(thisAsmItem);
 //			if (!dimensionName2.equals("0")) {
 //				AssemblyItemInstructions ThisAsmInstr1 = wfcComponentFeat.AssemblyItemInstructions_Create(componentModel, ModelItemType.ITEM_DIMENSION, 0);
 //				ThisAsmInstr1.SetItemName(dimensionName2);
 //				AssemblyItem ThisAsmItem1 = WAsm.CreateAssemblyItem(ThisAsmInstr1);
 //				AsmItemArray.append(ThisAsmItem1);
 //			}
-			wCFeat.SetAsFlexible(asmItemArray);
-		} catch (Exception e) {
-			session.UIShowMessageDialog("Error creating flexibility!", null);
-		}
+		wCFeat.SetAsFlexible(asmItemArray);
 	}
 
 	private Matrix3D createIdentityMatrix() throws jxthrowable {

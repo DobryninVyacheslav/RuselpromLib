@@ -2,7 +2,7 @@ package ru.ruselprom.argument.assembly;
 
 public class FlexDimensions {
 	
-	public String[] dimensions;
+	private String[] dimensions;
 
 	public FlexDimensions(String[] dimensions) {
 		this.dimensions = dimensions;

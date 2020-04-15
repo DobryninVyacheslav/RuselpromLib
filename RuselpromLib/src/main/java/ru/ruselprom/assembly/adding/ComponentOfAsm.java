@@ -19,19 +19,21 @@ import com.ptc.pfc.pfcModelItem.ModelItem;
 import com.ptc.pfc.pfcModelItem.ModelItemType;
 import com.ptc.pfc.pfcSelect.Selection;
 import com.ptc.pfc.pfcSelect.pfcSelect;
+import com.ptc.pfc.pfcSession.CreoCompatibility;
 import com.ptc.pfc.pfcSession.Session;
+import com.ptc.pfc.pfcSession.pfcSession;
 import com.ptc.pfc.pfcSolid.Solid;
 
 import ru.ruselprom.argument.assembly.RefCoordSystems;
 
 public class ComponentOfAsm extends AbstractComponentOfAsm {
 
-	public ComponentOfAsm(Model currModel, Session session) {
-        super(currModel, session);
+	public ComponentOfAsm(Model currModel) {
+        super(currModel);
     }
 
     public void addToAsmByCsys (Model currCompModel, RefCoordSystems refCoordSystems) throws jxthrowable {
-        
+    	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		Matrix3D identityMatrix = createIdentityMatrix();
 		Transform3D transf = pfcBase.Transform3D_Create (identityMatrix);
 		/*-----------------------------------------------------------------*\

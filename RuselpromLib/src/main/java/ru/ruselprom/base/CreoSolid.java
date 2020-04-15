@@ -1,13 +1,11 @@
 package ru.ruselprom.base;
 
-import com.ptc.pfc.pfcSession.Session;
 import com.ptc.pfc.pfcSolid.Solid;
 
-public abstract class CreoSolid extends CreoObject {
+public abstract class CreoSolid {
     protected Solid currSolid;
 
-    public CreoSolid(Solid currSolid, Session session) {
-        super(session);
+    public CreoSolid(Solid currSolid) {
         this.currSolid = currSolid;
     }
 
