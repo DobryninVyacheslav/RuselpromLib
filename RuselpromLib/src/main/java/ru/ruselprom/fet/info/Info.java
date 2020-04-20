@@ -16,7 +16,11 @@ import com.ptc.wfc.wfcComponentFeat.WComponentFeat;
 
 public class Info {
 
-    public void getFeatInfoIn(Model currModel) throws jxthrowable {
+	private Info() {
+	    throw new IllegalStateException("Utility class");
+	  }
+
+    public static void getFeatInfoIn(Model currModel) throws jxthrowable {
     	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		ModelItems items = currModel.ListItems(ModelItemType.ITEM_FEATURE);
 		int quan;
@@ -32,7 +36,7 @@ public class Info {
 		session.UIShowMessageDialog(allname.toString(), null);
 	}
 	
-	public void getFlexFeatInfoIn(Model currModel) throws jxthrowable {
+	public static void getFlexFeatInfoIn(Model currModel) throws jxthrowable {
 		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		ModelItems items = currModel.ListItems(ModelItemType.ITEM_FEATURE);
 		StringBuilder allname = new StringBuilder();
@@ -46,14 +50,14 @@ public class Info {
 		session.UIShowMessageDialog(allname.toString(), null);
 	}
 	
-	public void getCompSizeInfoIn(Model currModel) throws jxthrowable {
+	public static void getCompSizeInfoIn(Model currModel) throws jxthrowable {
 		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		Solid currSolid = (Solid)currModel;
 		Features feats = currSolid.ListFeaturesByType(Boolean.TRUE, FeatureType.FEATTYPE_COMPONENT);
 		session.UIShowMessageDialog(Integer.toString(feats.getarraysize()),null);
 	}
 	
-	public void getParamsInfoIn(Model currModel) throws jxthrowable{
+	public static void getParamsInfoIn(Model currModel) throws jxthrowable{
 		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		StringBuilder paramNames = new StringBuilder();
 		for (int i = 0;i < currModel.ListParams().getarraysize();i++) {
@@ -62,7 +66,7 @@ public class Info {
 		session.UIShowMessageDialog(paramNames.toString(), null);
 	}
 	
-	public void getDimensionsInfoIn(String nameFeat, Solid currSolid) throws jxthrowable {
+	public static void getDimensionsInfoIn(String nameFeat, Solid currSolid) throws jxthrowable {
 		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		String name = "";
 		double value;

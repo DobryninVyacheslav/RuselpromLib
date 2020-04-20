@@ -25,7 +25,7 @@ import com.ptc.wfc.wfcSolidInstructions.wfcSolidInstructions;
 
 public class ExtrusionAddOneWay {
 
-    public void modelBuild(int depth, String newFeatName, String refSecName, Solid currSolid)  throws jxthrowable {
+    public void build(double depth, String newFeatName, String refSecName, Solid currSolid)  throws jxthrowable {
     	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 	    Feature section = currSolid.GetFeatureByName(refSecName);
 		Selection refSection =  pfcSelect.CreateModelItemSelection(section, null);
