@@ -13,13 +13,10 @@ import com.ptc.pfc.pfcWindow.Window;
 public class TemplateModel {
     private String tempName;
     private String tempPath;
-    private String newModelName;
-	
 
-    public TemplateModel(String tempName, String tempPath, String newModelName) {
+    public TemplateModel(String tempName, String tempPath) {
 		this.tempName = tempName;
 		this.tempPath = tempPath;
-		this.newModelName = newModelName;
 	}
 
 	public String getTempName() {
@@ -38,45 +35,47 @@ public class TemplateModel {
 		this.tempPath = tempPath;
 	}
 
-	public String getNewModelName() {
-        return newModelName;
-    }
-
-    public void setNewModelName(String newModelName) {
-        this.newModelName = newModelName;
-    }
-
-    public void createModelWithDisp() throws jxthrowable {
+	public Model retrAndCopyInNewFileWithDisp(String newModelName) throws jxthrowable {
     	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
-		Model template = retrieveTemp();
-		if (session.GetModel(newModelName, ModelType.MDL_ASSEMBLY) != null ||
-			session.GetModel(newModelName, ModelType.MDL_PART) != null ||
-			session.GetModel(newModelName, ModelType.MDL_DRAWING) != null) {
+		Model template = retrieve();
+		Model asmMdl = session.GetModel(newModelName, ModelType.MDL_ASSEMBLY);
+		Model partMdl = session.GetModel(newModelName, ModelType.MDL_PART);
+		Model dwrMdl = session.GetModel(newModelName, ModelType.MDL_DRAWING);
+		if (asmMdl != null || partMdl != null || dwrMdl != null) {
 			template.Erase();
-			return;
+			if (asmMdl != null) {
+				return asmMdl;
+			}
+			return partMdl != null ? partMdl : dwrMdl;
 		}
-		Model newModel = template.CopyAndRetrieve(newModelName, null);
-		Window newWindow = session.CreateModelWindow(newModel); 
-	    newModel.Display(); 
+		Model newMdl = template.CopyAndRetrieve(newModelName, null);
+		Window newWindow = session.CreateModelWindow(newMdl); 
+	    newMdl.Display(); 
 	    session.SetCurrentWindow(newWindow); 
 	    newWindow.Activate();
 	    template.Erase();
+	    return newMdl;
 	}
 	
-	public void createModel() throws jxthrowable {
+	public Model retrAndCopyInNewFile(String newModelName) throws jxthrowable {
 		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
-		Model template = retrieveTemp();
-		if (session.GetModel(newModelName, ModelType.MDL_ASSEMBLY) != null ||
-			session.GetModel(newModelName, ModelType.MDL_PART) != null ||
-			session.GetModel(newModelName, ModelType.MDL_DRAWING) != null) {
+		Model template = retrieve();
+		Model asmMdl = session.GetModel(newModelName, ModelType.MDL_ASSEMBLY);
+		Model partMdl = session.GetModel(newModelName, ModelType.MDL_PART);
+		Model dwrMdl = session.GetModel(newModelName, ModelType.MDL_DRAWING);
+		if (asmMdl != null || partMdl != null || dwrMdl != null) {
 			template.Erase();
-			return;
+			if (asmMdl != null) {
+				return asmMdl;
+			}
+			return partMdl != null ? partMdl : dwrMdl;
 		}
-		template.CopyAndRetrieve(newModelName, null);
+		Model newMdl = template.CopyAndRetrieve(newModelName, null);
 	    template.Erase();
+	    return newMdl;
 	}
 	
-	public Model retrieveTemp() throws jxthrowable {
+	public Model retrieve() throws jxthrowable {
 		Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		ModelDescriptor desc = pfcModel.ModelDescriptor_CreateFromFileName(tempName);
 		desc.SetPath (tempPath);
