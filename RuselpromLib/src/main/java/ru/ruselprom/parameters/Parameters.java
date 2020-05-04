@@ -12,13 +12,13 @@ public class Parameters {
 	    throw new IllegalStateException("Utility class");
 	}
 
-	public static void createDoubleParamInDeg(String paramName, Double doubleParamValue, Model currModel) throws jxthrowable {
+	public static void createDoubleParamInDeg(String paramName, double doubleParamValue, Model currModel) throws jxthrowable {
 		if (((WSolid)currModel).UnitsUsed()) {
 			currModel.CreateParamWithUnits(paramName, pfcModelItem.CreateDoubleParamValue(doubleParamValue), ((WSolid)currModel).GetUnit("deg", false));
 		}
 	}
 	
-	public static void createDoubleLengthParam(String paramName, Double doubleParamValue, LengthUnitType lengthUnitType, Model currModel) throws jxthrowable {
+	public static void createDoubleLengthParam(String paramName, double doubleParamValue, LengthUnitType lengthUnitType, Model currModel) throws jxthrowable {
 		if (((WSolid)currModel).UnitsUsed()) {
 			switch (lengthUnitType.getValue()) {
 			case LengthUnitType._LENGTHUNIT_MM:
@@ -58,8 +58,12 @@ public class Parameters {
 		currModel.CreateParam(paramName, pfcModelItem.CreateStringParamValue(stringParamValue));
 	}
 
-	public static void createDoubleParam(String paramName, Double doubleParamValue, Model currModel) throws jxthrowable {
+	public static void createDoubleParam(String paramName, double doubleParamValue, Model currModel) throws jxthrowable {
 		currModel.CreateParam(paramName, pfcModelItem.CreateDoubleParamValue(doubleParamValue));
+	}
+
+	public static void createIntParam(String paramName, int intParamValue, Model currModel) throws jxthrowable {
+		currModel.CreateParam(paramName, pfcModelItem.CreateIntParamValue(intParamValue));
 	}
 
 	public static void createBoolParam(String paramName, Boolean boolParamValue, Model currModel) throws jxthrowable {
@@ -70,11 +74,15 @@ public class Parameters {
 		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateStringParamValue(stringParamValue));
 	}
 	
-	public static void setBoolParamValue(String paramName, Boolean boolParamValue, Model currModel) throws jxthrowable {
-		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateBoolParamValue(boolParamValue));
+	public static void setDoubleParamValue(String paramName, double doubleParamValue, Model currModel) throws jxthrowable {
+		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateDoubleParamValue(doubleParamValue));
 	}
 	
-	public static void setDoubleParamValue(String paramName, Double doubleParamValue, Model currModel) throws jxthrowable {
-		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateDoubleParamValue(doubleParamValue));
+	public static void setIntParamValue(String paramName, double intParamValue, Model currModel) throws jxthrowable {
+		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateDoubleParamValue(intParamValue));
+	}
+
+	public static void setBoolParamValue(String paramName, Boolean boolParamValue, Model currModel) throws jxthrowable {
+		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateBoolParamValue(boolParamValue));
 	}
 }
