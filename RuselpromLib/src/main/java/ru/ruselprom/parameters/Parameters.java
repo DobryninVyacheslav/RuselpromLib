@@ -78,8 +78,8 @@ public class Parameters {
 		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateDoubleParamValue(doubleParamValue));
 	}
 	
-	public static void setIntParamValue(String paramName, double intParamValue, Model currModel) throws jxthrowable {
-		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateDoubleParamValue(intParamValue));
+	public static void setIntParamValue(String paramName, int intParamValue, Model currModel) throws jxthrowable {
+		currModel.GetParam(paramName).SetValue(pfcModelItem.CreateIntParamValue(intParamValue));
 	}
 
 	public static void setBoolParamValue(String paramName, Boolean boolParamValue, Model currModel) throws jxthrowable {
