@@ -21,14 +21,19 @@ import com.ptc.wfc.wfcSession.WSession;
 
 public class TwoRotatPattern extends AbstractRotatPattern {
 
-	public TwoRotatPattern(String refAxisName) {
-		super(refAxisName);
+	private String secondRefAxisName;
+
+	public TwoRotatPattern(String firstRefAxisName, String secondRefAxisName) {
+		super(firstRefAxisName);
+		this.secondRefAxisName = secondRefAxisName;
 	}
 
 	public void patternBuild(int numFirstItems, double angleOfFirstRotat, int numSecondItems, double angleOfSecondRotat, String newFeatName, String refFeatName, Solid currSolid) throws jxthrowable {
     	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
-	    Axis axis = (Axis)currSolid.GetFeatureByName(refAxisName).ListSubItems(ModelItemType.ITEM_AXIS).get(0);
-	    Selection refAxis =  pfcSelect.CreateModelItemSelection(axis, null);
+	    Axis firstAxis = (Axis)currSolid.GetFeatureByName(refAxisName).ListSubItems(ModelItemType.ITEM_AXIS).get(0);
+	    Selection firstRefAxis =  pfcSelect.CreateModelItemSelection(firstAxis, null);
+	    Axis secondAxis = (Axis)currSolid.GetFeatureByName(secondRefAxisName).ListSubItems(ModelItemType.ITEM_AXIS).get(0);
+	    Selection secondRefAxis =  pfcSelect.CreateModelItemSelection(secondAxis, null);
 	    
 		Elements elements = Elements.create();
 		
@@ -61,7 +66,7 @@ public class TwoRotatPattern extends AbstractRotatPattern {
 	    elements.append(elem_3_0);
 	    
 	    //PRO_E_DIRECTION_REFERENCE
-	    Element elem_4_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_DIRECTION_REFERENCE,pfcArgument.CreateSelectionArgValue(refAxis),4);	//Direction Ref (PRO_VALUE_TYPE_SELECTION)
+	    Element elem_4_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_DIRECTION_REFERENCE,pfcArgument.CreateSelectionArgValue(firstRefAxis),4);	//Direction Ref (PRO_VALUE_TYPE_SELECTION)
 	    elements.append(elem_4_0);
 	    
 //		    //PRO_E_DIRECTION_FLIP
@@ -90,8 +95,8 @@ public class TwoRotatPattern extends AbstractRotatPattern {
 	    
 	    //PRO_E_DIR_PAT_DIR2_OPT
 	    Element elem_2_6 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_DIR_PAT_DIR2_OPT,pfcArgument.CreateIntArgValue(60),2);				//PRO_GENPAT_TRANSLATIONAL = -1
-	    elements.append(elem_2_6);																												//PRO_GENPAT_DIR1_ROTATIONAL = 58 //PRO_GENPAT_DIR2_ROTATIONAL = 60 
-	    
+	    elements.append(elem_2_6);																												//PRO_GENPAT_DIR1_ROTATIONAL = 58
+	    																																		//PRO_GENPAT_DIR2_ROTATIONAL = 60
 	    //PRO_E_GENPAT_DIR2
 	    Element elem_2_7 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_GENPAT_DIR2,null,2);													//2st Direction Compound
 	    elements.append(elem_2_7);
@@ -101,7 +106,7 @@ public class TwoRotatPattern extends AbstractRotatPattern {
 	    elements.append(elem_3_1);
 	    
 	    //PRO_E_DIRECTION_REFERENCE
-	    Element elem_4_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_DIRECTION_REFERENCE,pfcArgument.CreateSelectionArgValue(refAxis),4);	//Direction Ref (PRO_VALUE_TYPE_SELECTION)
+	    Element elem_4_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_DIRECTION_REFERENCE,pfcArgument.CreateSelectionArgValue(secondRefAxis),4);	//Direction Ref (PRO_VALUE_TYPE_SELECTION)
 	    elements.append(elem_4_2);
 	    
 //		    //PRO_E_DIRECTION_FLIP
