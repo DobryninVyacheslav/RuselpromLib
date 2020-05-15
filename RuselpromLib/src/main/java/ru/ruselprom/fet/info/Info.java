@@ -75,7 +75,7 @@ public class Info {
 		for (int i = 0; i < dimensions.getarraysize(); i++) {
 			name = dimensions.get(i).GetName();
 			value = ((Dimension)dimensions.get(i)).GetDimValue();
-			allname.append((i+1) + ") " + name + ": " + value + "\n");
+			allname.append(i + ") " + name + ": " + value + "\n");
 		}
 		session.UIShowMessageDialog(allname.toString(), null);
 	}
