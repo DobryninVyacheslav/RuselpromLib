@@ -1,4 +1,4 @@
-package ru.ruselprom.drawing.add;
+package ru.ruselprom.drawing;
 
 import com.ptc.cipjava.jxthrowable;
 import com.ptc.pfc.pfcBase.Matrix3D;

@@ -1,4 +1,4 @@
-package ru.ruselprom.drawing.create;
+package ru.ruselprom.drawing;
 
 import com.ptc.cipjava.jxthrowable;
 import com.ptc.pfc.pfcDrawing.Drawing;
