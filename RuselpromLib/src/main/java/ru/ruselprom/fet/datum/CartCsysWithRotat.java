@@ -40,7 +40,7 @@ public class CartCsysWithRotat extends CreoModel {
 		Elements elements = Elements.create();
 		
 		//PRO_E_FEATURE_TREE
-		Element elem_0_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_FEATURE_TREE,null,0);												//������� ������� ������
+		Element elem_0_0 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_FEATURE_TREE,null,0);
 	    elements.append(elem_0_0);
 	    
 	    //PRO_E_FEATURE_TYPE
