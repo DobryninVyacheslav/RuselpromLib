@@ -2,11 +2,9 @@ package ru.ruselprom.fet.datum;
 
 import com.ptc.cipjava.jxthrowable;
 import com.ptc.pfc.pfcArgument.pfcArgument;
-import com.ptc.pfc.pfcFeature.Feature;
 import com.ptc.pfc.pfcGeometry.CoordSystem;
 import com.ptc.pfc.pfcModel.Model;
 import com.ptc.pfc.pfcModelItem.ModelItemType;
-import com.ptc.pfc.pfcModelItem.ModelItems;
 import com.ptc.pfc.pfcSelect.Selection;
 import com.ptc.pfc.pfcSelect.pfcSelect;
 import com.ptc.pfc.pfcSession.CreoCompatibility;
@@ -32,13 +30,11 @@ public class CartCsysWithRotat extends CreoModel {
         super(currModel);
     }
 
-    public void csysBuild(String csysName, double offsetX, double offsetY, double offsetZ, double rotatX, double rotatY, double rotatZ) throws jxthrowable {
+    public void csysBuild(String originCsName, String newCsName, double offsetX, double offsetY, double offsetZ, double rotatX, double rotatY, double rotatZ) throws jxthrowable {
     	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 	    WSolid currSolid = (WSolid)currModel;
 	    
-	    ModelItems items = currSolid.ListItems(ModelItemType.ITEM_FEATURE);
-	    
-	    CoordSystem csys = (CoordSystem)((Feature)items.get(1)).ListSubItems(ModelItemType.ITEM_COORD_SYS).get(0);
+	    CoordSystem csys = (CoordSystem)currSolid.GetFeatureByName(originCsName).ListSubItems(ModelItemType.ITEM_COORD_SYS).get(0);
 	    Selection refCsys =  pfcSelect.CreateModelItemSelection(csys, null);
 	    		    
 		Elements elements = Elements.create();
@@ -52,7 +48,7 @@ public class CartCsysWithRotat extends CreoModel {
 	    elements.append(elem_1_0);
 	    
 	    //PRO_E_STD_FEATURE_NAME
-	    Element elem_1_1 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_STD_FEATURE_NAME, pfcArgument.CreateStringArgValue(csysName),1);	//Feature Name 
+	    Element elem_1_1 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_STD_FEATURE_NAME, pfcArgument.CreateStringArgValue(newCsName),1);	//Feature Name 
 	    elements.append(elem_1_1);
 	    
 	    //PRO_E_CSYS_ORIGIN_CONSTRS
