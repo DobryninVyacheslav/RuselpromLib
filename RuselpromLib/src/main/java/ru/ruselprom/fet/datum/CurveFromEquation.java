@@ -85,7 +85,7 @@ public class CurveFromEquation extends CreoModel {
 		currSolid.WCreateFeature(elemTree,featOpts,regenInstr);
 	}
 	
-	enum CsysTypes {
+	public enum CsysTypes {
 		CARTESIAN(0),
 		CYLINDRICAL(1),
 		SPHERICAL(2);
