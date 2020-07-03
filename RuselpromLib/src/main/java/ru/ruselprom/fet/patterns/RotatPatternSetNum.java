@@ -19,13 +19,15 @@ import com.ptc.wfc.wfcFeature.PatternType;
 import com.ptc.wfc.wfcFeature.WFeature;
 import com.ptc.wfc.wfcSession.WSession;
 
+import ru.ruselprom.base.Direction;
+
 public class RotatPatternSetNum extends AbstractRotatPattern {
 	
     public RotatPatternSetNum(String refAxisName) {
         super(refAxisName);
     }
 
-    public void patternBuild(int numItems, double angleBetweenMembers, int dirOfRotat, String newFeatName, String refFeatName, Solid currSolid) throws jxthrowable {
+    public void patternBuild(int numItems, double angleBetweenMembers, Direction dirOfRotat, String newFeatName, String refFeatName, Solid currSolid) throws jxthrowable {
     	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 	    Axis axis = (Axis)currSolid.GetFeatureByName(refAxisName).ListSubItems(ModelItemType.ITEM_AXIS).get(0);
 	    Selection refAxis =  pfcSelect.CreateModelItemSelection(axis, null);
@@ -53,7 +55,7 @@ public class RotatPatternSetNum extends AbstractRotatPattern {
 	    elements.append(elem_2_1);																											//-360 <= value <= 360 	////
 	    
 	    //PRO_E_AXIS_PAT_DIR1_FLIP
-	    Element elem_2_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_AXIS_PAT_DIR1_FLIP,pfcArgument.CreateIntArgValue(dirOfRotat),2);	//Axis 1st Increment (PRO_VALUE_TYPE_DOUBLE)
+	    Element elem_2_2 = wfcElementTree.Element_Create(wfcElemIds.PRO_E_AXIS_PAT_DIR1_FLIP,pfcArgument.CreateIntArgValue(dirOfRotat.getValue()),2);	//Axis 1st Increment (PRO_VALUE_TYPE_DOUBLE)
 	    elements.append(elem_2_2);
 	    
 	    //PRO_E_GENPAT_DIM_FIRST_DIR
