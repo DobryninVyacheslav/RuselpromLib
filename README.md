@@ -8,4 +8,4 @@ At this stage, this library does not use such generally accepted principles as S
 ## Class [Macro](src/main/java/ru/ruselprom/lib/base/Macro.java) 
 | Method        | Description                                          | 
 | ------------- | -------------------------------------------------- | 
-|void [execute](src/main/java/ru/ruselprom/lib/base/Macro.java::execute)(String macroCode)|Executes the macro passed to the parameter|
+|void execute(String macroCode)|Executes the macro passed to the parameter|
