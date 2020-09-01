@@ -6,7 +6,17 @@ At this stage, this library does not use such generally accepted principles as S
 
 # Class documentation
 ## package [ru.ruselprom.lib.base](src/main/java/ru/ruselprom/lib/base)
-## Class [Macro](src/main/java/ru/ruselprom/lib/base/Macro.java) 
+### Class [Macro](src/main/java/ru/ruselprom/lib/base/Macro.java) 
 | Method        | Description                                          | 
 | ------------- | -------------------------------------------------- | 
 |void execute(String macroCode)|Executes the macro passed to the parameter|
+### Enum [Direction](src/main/java/ru/ruselprom/lib/base/Direction.java)
+| Constant      | Description                                          | 
+| ------------- | -------------------------------------------------- | 
+|CLOCKWISE|Clockwise direction|
+|COUNTERCLOCKWISE|Counterclockwise direction|
+
+| Method        | Description                                          | 
+| ------------- | -------------------------------------------------- | 
+|int getValue()|getting a numerical value for the direction of rotation|
+|static int getValue(Direction direction)|getting a numerical value for the direction of rotation by Direction Constant|
