@@ -10,7 +10,7 @@ At this stage, this library does not use such generally accepted principles as S
 | Method        | Description                                          | 
 | ----------------- | ---------------------------------------------- | 
 |void addToAsmByCsys (Model currCompModel, [RefCoordSystems](src/main/java/ru/ruselprom/lib/assembly/argument/RefCoordSystems.java) refCoordSystems)|adds the model specified by the first parameter to the assembly specified in the class constructor. The addition occurs by aligning the coordinate systems specified in the second parameter of this method.|
-|void addToAsmByCsysWithFlexDims (FlexDimensions flexDims, Model currCompModel, RefCoordSystems refCoordSystems)|same as addToAsmByCsys, but with flexible sizes added to the component|
+|void addToAsmByCsysWithFlexDims ([FlexDimensions](src/main/java/ru/ruselprom/lib/assembly/argument/FlexDimensions.java) flexDims, Model currCompModel, [RefCoordSystems](src/main/java/ru/ruselprom/lib/assembly/argument/RefCoordSystems.java) refCoordSystems)|same as addToAsmByCsys, but with flexible sizes added to the component|
 ## package [ru.ruselprom.lib.base](src/main/java/ru/ruselprom/lib/base)
 ### Class [Macro](src/main/java/ru/ruselprom/lib/base/Macro.java) 
 | Method        | Description                                          | 
