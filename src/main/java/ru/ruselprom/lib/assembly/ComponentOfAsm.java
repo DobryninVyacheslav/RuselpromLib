@@ -1,4 +1,4 @@
-package ru.ruselprom.lib.assembly.adding;
+package ru.ruselprom.lib.assembly;
 
 import com.ptc.cipjava.intseq;
 import com.ptc.cipjava.jxthrowable;
@@ -24,7 +24,7 @@ import com.ptc.pfc.pfcSession.Session;
 import com.ptc.pfc.pfcSession.pfcSession;
 import com.ptc.pfc.pfcSolid.Solid;
 
-import ru.ruselprom.lib.argument.assembly.RefCoordSystems;
+import ru.ruselprom.lib.assembly.argument.RefCoordSystems;
 
 public class ComponentOfAsm extends AbstractComponentOfAsm {
 

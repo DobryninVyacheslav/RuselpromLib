@@ -1,4 +1,4 @@
-package ru.ruselprom.lib.assembly.adding;
+package ru.ruselprom.lib.assembly;
 
 import com.ptc.pfc.pfcModel.Model;
 

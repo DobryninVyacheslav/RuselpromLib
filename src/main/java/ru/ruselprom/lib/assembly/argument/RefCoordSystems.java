@@ -1,4 +1,4 @@
-package ru.ruselprom.lib.argument.assembly;
+package ru.ruselprom.lib.assembly.argument;
 
 public class RefCoordSystems {
 	private String compCsysName;
