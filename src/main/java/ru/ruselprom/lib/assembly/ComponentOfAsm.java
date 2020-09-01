@@ -19,41 +19,46 @@ import com.ptc.pfc.pfcModelItem.ModelItem;
 import com.ptc.pfc.pfcModelItem.ModelItemType;
 import com.ptc.pfc.pfcSelect.Selection;
 import com.ptc.pfc.pfcSelect.pfcSelect;
-import com.ptc.pfc.pfcSession.CreoCompatibility;
-import com.ptc.pfc.pfcSession.Session;
-import com.ptc.pfc.pfcSession.pfcSession;
 import com.ptc.pfc.pfcSolid.Solid;
+import com.ptc.wfc.wfcAssembly.WAssembly;
+import com.ptc.wfc.wfcComponentFeat.AssemblyItem;
+import com.ptc.wfc.wfcComponentFeat.AssemblyItemInstructions;
+import com.ptc.wfc.wfcComponentFeat.AssemblyItems;
+import com.ptc.wfc.wfcComponentFeat.WComponentFeat;
+import com.ptc.wfc.wfcComponentFeat.wfcComponentFeat;
 
+import ru.ruselprom.lib.assembly.argument.FlexDimensions;
 import ru.ruselprom.lib.assembly.argument.RefCoordSystems;
 
-public class ComponentOfAsm extends AbstractComponentOfAsm {
+public class ComponentOfAsm {
+	
+	private String compName;
+	private Model currAsm;
+	private ComponentFeat componentFeat;
+	
+	public ComponentOfAsm(Model currAsm) {
+		this.currAsm = currAsm;
+	}
 
-	public ComponentOfAsm(Model currModel) {
-        super(currModel);
+	public String getCompName() {
+        return compName;
+    }
+
+    public void setCompName(String compName) {
+        this.compName = compName;
     }
 
     public void addToAsmByCsys (Model currCompModel, RefCoordSystems refCoordSystems) throws jxthrowable {
-    	Session session = pfcSession.GetCurrentSessionWithCompatibility(CreoCompatibility.C4Compatible);
 		Matrix3D identityMatrix = createIdentityMatrix();
 		Transform3D transf = pfcBase.Transform3D_Create (identityMatrix);
-		/*-----------------------------------------------------------------*\
-		Check the current assembly
-		\*-----------------------------------------------------------------*/
 		
-		if (currModel == null || currModel.GetType() != ModelType.MDL_ASSEMBLY) {
-			throw new RuntimeException ("Current model is not an assembly.");
-		}
-		Assembly assembly = (Assembly) currModel;
-		Solid compModel = (Solid)currCompModel;
-		
-		if (compModel == null) {
-			session.UIShowMessageDialog("compModel is null!", null);
-			return;
-		}
+		checkCurrAsmAndCurrCompModel(currCompModel);
+		Assembly assembly = (Assembly) currAsm;
+		Solid currCompSolid = (Solid)currCompModel;
 		/*-----------------------------------------------------------------*\
 		Package the component initially
 		\*-----------------------------------------------------------------*/
-		ComponentFeat asmComp = (ComponentFeat) assembly.AssembleComponent (compModel, transf);
+		componentFeat = (ComponentFeat) assembly.AssembleComponent (currCompSolid, transf);
 		/*-----------------------------------------------------------------*\
 		Prepare the constraints array
 		\*-----------------------------------------------------------------*/
@@ -65,7 +70,7 @@ public class ComponentOfAsm extends AbstractComponentOfAsm {
 		/*-----------------------------------------------------------------*\
 		Find the component datum
 		\*-----------------------------------------------------------------*/
-		ModelItem compItem = compModel.GetItemByName (ModelItemType.ITEM_COORD_SYS, refCoordSystems.getCompCsysName());
+		ModelItem compItem = currCompSolid.GetItemByName (ModelItemType.ITEM_COORD_SYS, refCoordSystems.getCompCsysName());
 		/*-----------------------------------------------------------------*\
 		For the assembly reference, initialize a component path.
 		This is necessary even if the reference geometry is in the assembly.
@@ -87,8 +92,39 @@ public class ComponentOfAsm extends AbstractComponentOfAsm {
 		/*-----------------------------------------------------------------*\
 		Set the assembly component constraints and regenerate the assembly.
 		\*-----------------------------------------------------------------*/
-		asmComp.SetName(compName);
-		asmComp.SetConstraints (constrs, null);
+		componentFeat.SetName(compName);
+		componentFeat.SetConstraints (constrs, null);
+	}
+    
+    public void addToAsmByCsysWithFlexDims (FlexDimensions flexDims, Model currCompModel, RefCoordSystems refCoordSystems) throws jxthrowable {
+    	addToAsmByCsys(currCompModel, refCoordSystems);
+    	makeCompFlex(flexDims.getDimensions()[0], (Solid)currCompModel, currCompModel);
+    }
+    
+    private void makeCompFlex(String dimensionName, Solid compModel, Model currModel) throws jxthrowable {
+		WAssembly wAsm = (WAssembly)(currModel);
+		WComponentFeat wCFeat = (WComponentFeat)(componentFeat);
+		AssemblyItems asmItemArray = AssemblyItems.create();
+		AssemblyItemInstructions thisAsmInstr = wfcComponentFeat.AssemblyItemInstructions_Create(compModel, ModelItemType.ITEM_DIMENSION, 0);
+		thisAsmInstr.SetItemName(dimensionName);
+		AssemblyItem thisAsmItem = wAsm.CreateAssemblyItem(thisAsmInstr);
+		asmItemArray.append(thisAsmItem);
+//			if (!dimensionName2.equals("0")) {
+//				AssemblyItemInstructions ThisAsmInstr1 = wfcComponentFeat.AssemblyItemInstructions_Create(componentModel, ModelItemType.ITEM_DIMENSION, 0);
+//				ThisAsmInstr1.SetItemName(dimensionName2);
+//				AssemblyItem ThisAsmItem1 = WAsm.CreateAssemblyItem(ThisAsmInstr1);
+//				AsmItemArray.append(ThisAsmItem1);
+//			}
+		wCFeat.SetAsFlexible(asmItemArray);
+	}
+
+	private void checkCurrAsmAndCurrCompModel(Model currCompModel) throws jxthrowable {
+		if (currAsm == null || currAsm.GetType() != ModelType.MDL_ASSEMBLY) {
+			throw new RuntimeException ("Current model is not an assembly.");
+		}
+		if (currCompModel == null) {
+			throw new RuntimeException ("Current component model is null.");
+		}
 	}
 
 	private Matrix3D createIdentityMatrix() throws jxthrowable {
