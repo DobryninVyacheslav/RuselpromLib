@@ -5,6 +5,7 @@
 At this stage, this library does not use such generally accepted principles as SOLID, so it is simple and not very extensible.</div>
 
 # Class documentation
+## package [ru.ruselprom.lib.base](src/main/java/ru/ruselprom/lib/base)
 ## Class [Macro](src/main/java/ru/ruselprom/lib/base/Macro.java) 
 | Method        | Description                                          | 
 | ------------- | -------------------------------------------------- | 
