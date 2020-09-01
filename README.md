@@ -5,6 +5,11 @@
 At this stage, this library does not use such generally accepted principles as SOLID, so it is simple and not very extensible.</div>
 
 # Class documentation
+## package [ru.ruselprom.lib.assembly](src/main/java/ru/ruselprom/lib/assembly)
+### Class [ComponentOfAsm](src/main/java/ru/ruselprom/lib/assembly/ComponentOfAsm.java)
+| Method        | Description                                          | 
+| ------------- | -------------------------------------------------- | 
+|void addToAsmByCsys (Model currCompModel, [RefCoordSystems](src/main/java/ru/ruselprom/lib/assembly/argument/RefCoordSystems.java) refCoordSystems)|adds the model specified by the first parameter to the assembly specified in the class constructor. The addition occurs by aligning the coordinate systems specified in the second parameter of this method.|
 ## package [ru.ruselprom.lib.base](src/main/java/ru/ruselprom/lib/base)
 ### Class [Macro](src/main/java/ru/ruselprom/lib/base/Macro.java) 
 | Method        | Description                                          | 
