@@ -19,4 +19,8 @@ At this stage, this library does not use such generally accepted principles as S
 | Method        | Description                                          | 
 | ------------- | -------------------------------------------------- | 
 |int getValue()|getting a numerical value for the direction of rotation|
-|static int getValue(Direction direction)|getting a numerical value for the direction of rotation by Direction Constant|
+|static int getValue(Direction direction)|getting a numerical value for the direction of rotation by direction constant|
+### Class [Regeneration](src/main/java/ru/ruselprom/lib/base/Regeneration.java)
+| Method        | Description                                          | 
+| ------------- | -------------------------------------------------- | 
+|static void regenerateSolid (Solid currSolid)|Regenerates the solid model passed to the method parameter|
