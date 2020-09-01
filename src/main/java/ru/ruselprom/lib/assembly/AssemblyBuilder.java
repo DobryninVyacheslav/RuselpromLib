@@ -27,34 +27,26 @@ import com.ptc.wfc.wfcComponentFeat.AssemblyItems;
 import com.ptc.wfc.wfcComponentFeat.WComponentFeat;
 import com.ptc.wfc.wfcComponentFeat.wfcComponentFeat;
 
+import ru.ruselprom.lib.assembly.argument.ComponentOfAsm;
 import ru.ruselprom.lib.assembly.argument.FlexDimensions;
 import ru.ruselprom.lib.assembly.argument.RefCoordSystems;
 
-public class ComponentOfAsm {
+public class AssemblyBuilder {
 	
-	private String compName;
 	private Model currAsm;
 	private ComponentFeat componentFeat;
 	
-	public ComponentOfAsm(Model currAsm) {
+	public AssemblyBuilder(Model currAsm) {
 		this.currAsm = currAsm;
 	}
 
-	public String getCompName() {
-        return compName;
-    }
-
-    public void setCompName(String compName) {
-        this.compName = compName;
-    }
-
-    public void addToAsmByCsys (Model currCompModel, RefCoordSystems refCoordSystems) throws jxthrowable {
+    public void addToAsmByCsys (ComponentOfAsm componentOfAsm, RefCoordSystems refCoordSystems) throws jxthrowable {
 		Matrix3D identityMatrix = createIdentityMatrix();
 		Transform3D transf = pfcBase.Transform3D_Create (identityMatrix);
 		
-		checkCurrAsmAndCurrCompModel(currCompModel);
+		checkCurrAsmAndCurrCompModel(componentOfAsm.getCurrCompModel());
 		Assembly assembly = (Assembly) currAsm;
-		Solid currCompSolid = (Solid)currCompModel;
+		Solid currCompSolid = (Solid)componentOfAsm.getCurrCompModel();
 		/*-----------------------------------------------------------------*\
 		Package the component initially
 		\*-----------------------------------------------------------------*/
@@ -92,13 +84,13 @@ public class ComponentOfAsm {
 		/*-----------------------------------------------------------------*\
 		Set the assembly component constraints and regenerate the assembly.
 		\*-----------------------------------------------------------------*/
-		componentFeat.SetName(compName);
+		componentFeat.SetName(componentOfAsm.getInternalName());
 		componentFeat.SetConstraints (constrs, null);
 	}
     
-    public void addToAsmByCsysWithFlexDims (FlexDimensions flexDims, Model currCompModel, RefCoordSystems refCoordSystems) throws jxthrowable {
-    	addToAsmByCsys(currCompModel, refCoordSystems);
-    	makeCompFlex(flexDims.getDimensions()[0], (Solid)currCompModel, currCompModel);
+    public void addToAsmByCsysWithFlexDims (FlexDimensions flexDims, ComponentOfAsm componentOfAsm, RefCoordSystems refCoordSystems) throws jxthrowable {
+    	addToAsmByCsys(componentOfAsm, refCoordSystems);
+//    	makeCompFlex(flexDims.getDimensions()[0], (Solid)currCompModel, currCompModel);
     }
     
     private void makeCompFlex(String dimensionName, Solid compModel, Model currModel) throws jxthrowable {
