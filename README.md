@@ -6,7 +6,7 @@ At this stage, this library does not use such generally accepted principles as S
 
 # Class documentation
 ## package [ru.ruselprom.lib.assembly](src/main/java/ru/ruselprom/lib/assembly)
-### Class [ComponentOfAsm](src/main/java/ru/ruselprom/lib/assembly/ComponentOfAsm.java)
+### Class [AssemblyBuilder](src/main/java/ru/ruselprom/lib/assembly/AssemblyBuilder.java)
 | Method        | Description                                          | 
 | ----------------- | ---------------------------------------------- | 
 |void addToAsmByCsys (Model currCompModel, [RefCoordSystems](src/main/java/ru/ruselprom/lib/assembly/argument/RefCoordSystems.java) refCoordSystems)|adds the model specified by the first parameter to the assembly specified in the class constructor. The addition occurs by aligning the coordinate systems specified in the second parameter of this method.|
