@@ -5,7 +5,22 @@
 At this stage, this library does not use such generally accepted principles as SOLID, so it is simple and not very extensible.</div>
 
 # Class documentation
-## Class [Macro](src/main/java/ru/ruselprom/lib/base/Macro.java) 
+## package [ru.ruselprom.lib.base](src/main/java/ru/ruselprom/lib/base)
+### Class [Macro](src/main/java/ru/ruselprom/lib/base/Macro.java) 
 | Method        | Description                                          | 
 | ------------- | -------------------------------------------------- | 
 |void execute(String macroCode)|Executes the macro passed to the parameter|
+### Enum [Direction](src/main/java/ru/ruselprom/lib/base/Direction.java)
+| Constant      | Description                                          | 
+| ------------- | -------------------------------------------------- | 
+|CLOCKWISE|Clockwise direction|
+|COUNTERCLOCKWISE|Counterclockwise direction|
+
+| Method        | Description                                          | 
+| ------------- | -------------------------------------------------- | 
+|int getValue()|getting a numerical value for the direction of rotation|
+|static int getValue(Direction direction)|getting a numerical value for the direction of rotation by direction constant|
+### Class [Regeneration](src/main/java/ru/ruselprom/lib/base/Regeneration.java)
+| Method        | Description                                          | 
+| ------------- | -------------------------------------------------- | 
+|static void regenerateSolid (Solid currSolid)|Regenerates the solid model passed to the method parameter|
