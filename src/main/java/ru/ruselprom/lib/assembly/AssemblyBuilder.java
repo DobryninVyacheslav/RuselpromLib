@@ -90,24 +90,20 @@ public class AssemblyBuilder {
     
     public void addToAsmByCsysWithFlexDims (FlexDimensions flexDims, ComponentOfAsm componentOfAsm, RefCoordSystems refCoordSystems) throws jxthrowable {
     	addToAsmByCsys(componentOfAsm, refCoordSystems);
-//    	makeCompFlex(flexDims.getDimensions()[0], (Solid)currCompModel, currCompModel);
+    	makeCompFlex(flexDims.getDimensions(), componentOfAsm.getCurrCompModel());
     }
     
-    private void makeCompFlex(String dimensionName, Solid compModel, Model currModel) throws jxthrowable {
-		WAssembly wAsm = (WAssembly)(currModel);
-		WComponentFeat wCFeat = (WComponentFeat)(componentFeat);
-		AssemblyItems asmItemArray = AssemblyItems.create();
-		AssemblyItemInstructions thisAsmInstr = wfcComponentFeat.AssemblyItemInstructions_Create(compModel, ModelItemType.ITEM_DIMENSION, 0);
-		thisAsmInstr.SetItemName(dimensionName);
-		AssemblyItem thisAsmItem = wAsm.CreateAssemblyItem(thisAsmInstr);
-		asmItemArray.append(thisAsmItem);
-//			if (!dimensionName2.equals("0")) {
-//				AssemblyItemInstructions ThisAsmInstr1 = wfcComponentFeat.AssemblyItemInstructions_Create(componentModel, ModelItemType.ITEM_DIMENSION, 0);
-//				ThisAsmInstr1.SetItemName(dimensionName2);
-//				AssemblyItem ThisAsmItem1 = WAsm.CreateAssemblyItem(ThisAsmInstr1);
-//				AsmItemArray.append(ThisAsmItem1);
-//			}
-		wCFeat.SetAsFlexible(asmItemArray);
+    private void makeCompFlex(String[] dimensionNames, Model compModel) throws jxthrowable {
+		WAssembly wAsm = (WAssembly)(currAsm);
+		WComponentFeat wComponentFeat = (WComponentFeat)(componentFeat);
+		AssemblyItems flexDims = AssemblyItems.create();
+		for (String dimensionName : dimensionNames) {
+			AssemblyItemInstructions flexDimInstr = wfcComponentFeat.AssemblyItemInstructions_Create(compModel, ModelItemType.ITEM_DIMENSION, 0);
+			flexDimInstr.SetItemName(dimensionName);
+			AssemblyItem flexDim = wAsm.CreateAssemblyItem(flexDimInstr);
+			flexDims.append(flexDim);
+		}
+		wComponentFeat.SetAsFlexible(flexDims);
 	}
 
 	private void checkCurrAsmAndCurrCompModel(Model currCompModel) throws jxthrowable {
